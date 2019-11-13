@@ -1,0 +1,95 @@
+#!/usr/bin/env python
+import sys
+import re
+import subprocess
+from prettytable import PrettyTable
+
+def GetHosts(srvname):
+  rf = open('./.cloudhosts',"r").readlines()
+  Count = 1
+  F=[]
+  x = PrettyTable(['Number','ServerName','IP'])
+  for i in rf:
+    if re.search(''.join(srvname),i):
+      li = i.split()
+      if len(li):
+        li = [li[0],''.join(li[1:])]
+        li.insert(0,Count)
+        x.add_row(li)
+        Count = Count + 1
+        F.append(li)
+  if len(F) == 0:
+      print "No results ! Check your keywords."
+  return x,F
+
+def help():
+  print 'Look here:'
+  print '\tp: display all hosts'
+  print '\tse param : search param in all hosts'
+  print '\tN: enter the Nth host'
+  print '\tE/e/Exit/exit: exit the program'
+
+
+def Mlist(srvname):
+  all,F = GetHosts('')
+  x,F = GetHosts(srvname)
+  print x
+  while True:
+      Port = raw_input("please choice Port: 22 or 2222 ,you choice :  ")
+      print Port
+      try:
+        Port = int(Port)
+      except:
+        print 'Unkonw command !'
+        help()
+        continue
+      break
+      
+  while True:
+      comm = raw_input('Please choice N > ')
+      if comm.strip() == '':
+        continue
+      if comm.strip() == '?':
+        help()
+        continue
+      if comm.strip() == 'p':
+        print all
+        continue
+      if comm.strip().split(' ')[0] == 'se':
+        if len(comm.strip().split(' ')) > 1:
+                x,F = GetHosts(comm.strip().split(' ')[1])
+                print x
+        else:
+                print 'se needs a string param'
+        continue
+      if comm.strip() in ('E','e','exit','Exit'):
+        sys.exit()
+      try:
+        number = int(comm)
+      except:
+        print 'Unkonw command !'
+        help()
+        continue
+      break
+  for i in F:
+    if number in i:
+      if ',' in i[2]:
+        IP = i[2].split(',')[0]
+      else:
+        IP = i[2]
+    else:
+      pass
+  LoginSSH(IP,Port)
+
+def LoginSSH(IP,Port):
+    print IP
+    cmd="ssh -l $USER -o 'ProxyCommand=/usr/local/bin/ncat --proxy proxy.nioint.com:8080 --proxy-type http %h %p' -p {0} -i //Users/skyoof.shen/.ssh/skyoof.shen.private_key {1}".format(Port,IP)
+    os.system(cmd)
+if __name__ == '__main__':
+  try:
+    arg = sys.argv[1:]
+  except IndexError:
+    print "Just do it only one."
+    sys.exit(1)
+  Mlist(arg)
+
