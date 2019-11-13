@@ -83,7 +83,7 @@ def Mlist(srvname):
 
 def LoginSSH(IP,Port):
     print IP
-    cmd="ssh -l $USER -o 'ProxyCommand=/usr/local/bin/ncat --proxy proxy.nioint.com:8080 --proxy-type http %h %p' -p {0} -i //Users/skyoof.shen/.ssh/skyoof.shen.private_key {1}".format(Port,IP)
+    cmd="ssh -l $USER  -p {0} -i //.ssh/private_key {1}".format(Port,IP)
     os.system(cmd)
 if __name__ == '__main__':
   try:

@@ -1,0 +1,5 @@
+####step 1 同步主机数据，目前只支持aws
+
+go run getHosts.go
+
+####step 2 运行./se 命令
