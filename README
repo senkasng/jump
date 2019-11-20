@@ -1,5 +1,5 @@
-####step 1 同步主机数据，目前只支持aws
+####step 1 同步主机数据，目前只支持aws,支持env
 
-go run getHosts.go
-
+go run getHosts.go -env -key -secret
+env 必须为test，或者prod
 ####step 2 运行./se 命令
