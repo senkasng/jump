@@ -11,19 +11,21 @@ import (
 	"flag"
 )
 
-var ip,name ,key,secret  string
+var ip,name ,key,secret ,env,filename string
 
 func init(){
 	flag.StringVar(&key,"key","","aws account key")
 	flag.StringVar(&secret,"secret","","aws account secret")
+	flag.StringVar(&env,"env","","aws environment. the value is test or prod")
 	flag.Parse()
-	if key == "" || secret == "" {
+	if key == "" || secret == "" || env == "" || env != "test" || env !="prod" {
 		os.Exit(1)
 	}
+	filename = "./.cloudhosts_" + env
 }
 
 func main() {
-	file,_ := os.Create("./.cloudhosts")
+	file,_ := os.Create(filename)
 	sess := session.Must(session.NewSession(&aws.Config{
 		Credentials: credentials.NewStaticCredentials(key, secret, ""),
 		Region:      aws.String(endpoints.CnNorth1RegionID),
@@ -54,6 +56,7 @@ func main() {
 	}
 	defer file.Close()
 	}
+	fmt.Println("success")
 }
 
 

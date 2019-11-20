@@ -5,7 +5,9 @@ import subprocess
 from prettytable import PrettyTable
 
 def GetHosts(srvname):
-  rf = open('./.cloudhosts',"r").readlines()
+  ct = open('./.cloudhosts_test',"r").readlines()
+  cp = open('./.cloudhosts_prod',"r").readlines()
+  rf = ct + cp
   Count = 1
   F=[]
   x = PrettyTable(['Number','ServerName','IP'])
