@@ -1,4 +1,4 @@
-####
+##
 step 1 同步主机数据，目前只支持aws,支持env
 
 go run getHosts.go -env -key -secret
