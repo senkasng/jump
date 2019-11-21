@@ -9,7 +9,6 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
 	"flag"
-	"strings"
 )
 
 var ip,name ,key,secret ,env,filename string
@@ -23,7 +22,9 @@ func init(){
 		flag.PrintDefaults()
 		os.Exit(1)
 	}
-	if strings.EqualFold(env,"test") == false || strings.EqualFold(env,"prod") == false {
+	if  env == "test"  || env == "prod" {
+		
+	}else {
 		fmt.Println("env is test or prod")
 		os.Exit(3)
 	}
