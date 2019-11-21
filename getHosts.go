@@ -9,6 +9,7 @@ import (
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/ec2"
 	"flag"
+	"strings"
 )
 
 var ip,name ,key,secret ,env,filename string
@@ -18,8 +19,13 @@ func init(){
 	flag.StringVar(&secret,"secret","","aws account secret")
 	flag.StringVar(&env,"env","","aws environment. the value is test or prod")
 	flag.Parse()
-	if key == "" || secret == "" || env == "" || env != "test" || env !="prod" {
+	if key == "" || secret == "" || env == "" {
+		flag.PrintDefaults()
 		os.Exit(1)
+	}
+	if strings.EqualFold(env,"test") == false || strings.EqualFold(env,"prod") == false {
+		fmt.Println("env is test or prod")
+		os.Exit(3)
 	}
 	filename = "./.cloudhosts_" + env
 }
